@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="C Language Lab: aprenda programação em C e inglês instrumental para tecnologia.">
+<title>C Language Lab | English Meets Code</title>
+
+<style>
+:root {
+  --bg: #080d19;
+  --panel: #111b30;
+  --panel2: #18243b;
+  --border: #293852;
+  --text: #f1f5ff;
+  --muted: #aab9d4;
+  --cyan: #51f0d0;
+  --blue: #63a9ff;
+  --purple: #a78bfa;
+  --green: #46df9a;
+  --red: #ff7b91;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  background:
+    radial-gradient(ellipse at 15% 0%, #172746 0, transparent 42%),
+    radial-gradient(ellipse at 90% 35%, #171633 0, transparent 38%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  line-height: 1.65;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.container { width: min(1120px, 92%); margin: auto; }
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(8,13,25,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.logo { font-size: 1.45rem; font-weight: 900; letter-spacing: -1px; }
+.logo span { color: var(--cyan); }
+nav { display: flex; gap: 22px; flex-wrap: wrap; }
+nav a { color: var(--muted); font-size: .92rem; }
+nav a:hover { color: var(--cyan); }
+section { padding: 72px 0; }
+.hero { padding: 90px 0 70px; }
+.eyebrow {
+  color: var(--cyan);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+h1 { font-size: clamp(2.4rem, 6vw, 4.7rem); line-height: 1.08; margin: 18px 0; letter-spacing: -2px; }
+h1 span {
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 12px; }
+h3 { font-size: 1.15rem; margin-bottom: 9px; }
+p { color: var(--muted); }
+.hero p { max-width: 700px; font-size: 1.08rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 19px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: .2s;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.btn-primary { color: #07141b; background: linear-gradient(100deg, var(--cyan), var(--blue)); }
+.btn-secondary { color: var(--text); background: var(--panel2); border: 1px solid var(--border); }
+.stats, .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 17px; }
+.stats { margin-top: 38px; }
+.stat, .card, .quiz-card {
+  background: linear-gradient(145deg, rgba(23,36,60,.96), rgba(14,23,40,.96));
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 23px;
+}
+.stat strong { display: block; color: var(--cyan); font-size: 1.7rem; }
+.stat span { color: var(--muted); font-size: .9rem; }
+.section-head { margin-bottom: 27px; max-width: 760px; }
+.section-head p { margin-top: 8px; }
+.card { height: 100%; }
+.card .icon { font-size: 1.7rem; margin-bottom: 12px; }
+.card p { font-size: .94rem; }
+.tag {
+  display: inline-block;
+  color: var(--cyan);
+  background: #17323b;
+  border: 1px solid #24505a;
+  border-radius: 7px;
+  padding: 3px 8px;
+  font-size: .75rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.code {
+  background: #070c16;
+  border: 1px solid #283951;
+  border-radius: 12px;
+  padding: 19px;
+  overflow-x: auto;
+  margin-top: 15px;
+  color: #c8d9f7;
+  font: .91rem/1.8 Consolas, "Courier New", monospace;
+  white-space: pre;
+}
+.code .comment { color: #7f94b7; }
+.code .keyword { color: #c3a5ff; }
+.code .string { color: #72e6b1; }
+.lesson { margin-bottom: 22px; }
+.callout {
+  border-left: 3px solid var(--cyan);
+  padding: 13px 17px;
+  background: #10232e;
+  border-radius: 0 10px 10px 0;
+  margin-top: 15px;
+}
+.callout p { color: #c9e4e9; }
+.search {
+  width: 100%;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 15px;
+  outline: none;
+  margin-bottom: 18px;
+}
+.search:focus { border-color: var(--cyan); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; min-width: 520px; }
+th, td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+th { color: var(--cyan); background: #15223a; }
+td { color: var(--muted); }
+td:first-child { color: var(--text); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+.quiz-card { max-width: 900px; margin: 0 auto; padding: clamp(20px, 4vw, 34px); }
+.quiz-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: #b7c8e5; font-size: .9rem; }
+.progress { height: 8px; background: #27344b; border-radius: 20px; overflow: hidden; margin: 17px 0 28px; }
+.progress-bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width .3s; }
+.topic { color: var(--cyan); font-weight: 900; font-size: .78rem; letter-spacing: 1px; text-transform: uppercase; }
+.question { font-size: clamp(1.3rem, 3vw, 1.8rem); line-height: 1.35; margin: 13px 0 9px; }
+.translation { color: #a8c3f5; margin-bottom: 23px; }
+.options { display: grid; gap: 11px; }
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  text-align: left;
+  padding: 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  width: 100%;
+  transition: .18s;
+}
+.option:hover:not(:disabled) { border-color: var(--cyan); background: #1b2b43; }
+.option:disabled { cursor: default; opacity: 1; }
+.letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 31px;
+  height: 31px;
+  background: #273750;
+  border-radius: 8px;
+  font-weight: 900;
+}
+.answer-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.answer-english { font-weight: 750; color: var(--text); }
+.answer-portuguese { color: #afbdd5; font-size: .9rem; line-height: 1.45; }
+.option.correct { border-color: var(--green); background: #10372d; }
+.option.incorrect { border-color: var(--red); background: #3a202e; }
+.option.correct .letter { background: #237c5b; }
+.option.incorrect .letter { background: #853c50; }
+.feedback { display: none; margin-top: 17px; border-radius: 10px; padding: 14px; }
+.feedback.show { display: block; }
+.feedback.good { background: #10372d; border: 1px solid #267b5c; }
+.feedback.bad { background: #3a202e; border: 1px solid #874052; }
+.feedback strong { display: block; margin-bottom: 3px; }
+.quiz-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-top: 22px; }
+.hint { font-size: .85rem; }
+.result { display: none; text-align: center; padding: 15px 0; }
+.result.show { display: block; }
+.result-score { font-size: 3.5rem; color: var(--cyan); font-weight: 900; }
+.review { text-align: left; margin-top: 24px; display: grid; gap: 12px; }
+.review-item { padding: 14px; border-radius: 10px; background: #0c1425; border: 1px solid var(--border); }
+.review-item p { font-size: .9rem; margin-top: 4px; }
+footer { border-top: 1px solid var(--border); padding: 25px 0; color: var(--muted); font-size: .9rem; text-align: center; }
+footer strong { color: var(--cyan); }
+@media(max-width:760px) {
+  .nav { padding: 15px 0; align-items: flex-start; flex-direction: column; }
+  nav { gap: 13px; }
+  .stats, .grid { grid-template-columns: 1fr; }
+  section { padding: 52px 0; }
+  .hero { padding: 60px 0 45px; }
+  .stat, .card { padding: 19px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="container nav">
+    <a class="logo" href="#inicio">C<span>LAB</span>_</a>
+    <nav aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#estruturas">Estruturas</a>
+      <a href="#glossario">Glossário</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="container">
+    <div class="eyebrow">English meets code · Aprenda na prática</div>
+    <h1>Learn C.<br><span>Think in code.</span></h1>
+    <p>
+      Um laboratório interativo para aprender os fundamentos da linguagem C
+      e desenvolver o inglês instrumental utilizado na programação.
+      Estude conceitos, consulte termos técnicos e teste seus conhecimentos.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#fundamentos">Começar a estudar →</a>
+      <a class="btn btn-secondary" href="#quiz">Fazer o quiz</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong>05</strong><span>Áreas de aprendizagem</span></div>
+      <div class="stat"><strong>EN + PT</strong><span>Inglês e português</span></div>
+      <div class="stat"><strong>100%</strong><span>Interativo no navegador</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="fundamentos">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">01 · Foundations</div>
+      <h2>Fundamentos da linguagem C</h2>
+      <p>Conheça os elementos básicos de um programa e aprenda a interpretar o código em inglês.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="icon">💻</div>
+        <h3>What is C?</h3>
+        <p><strong>Linguagem C:</strong> uma linguagem de programação utilizada para desenvolver sistemas, aplicações e programas eficientes.</p>
+      </article>
+      <article class="card">
+        <div class="icon">📦</div>
+        <h3>Variables and data types</h3>
+        <p><strong>Variáveis e tipos de dados:</strong> armazenam informações como números inteiros, números decimais e caracteres.</p>
+      </article>
+      <article class="card">
+        <div class="icon">⚙️</div>
+        <h3>Functions</h3>
+        <p><strong>Funções:</strong> blocos de código que realizam tarefas específicas e podem receber parâmetros.</p>
+      </article>
+    </div>
+
+    <div class="card lesson" style="margin-top:22px">
+      <h3>Seu primeiro programa em C</h3>
+      <p>Este exemplo exibe uma mensagem na tela.</p>
+      <pre class="code"><code><span class="comment">/* My first C program - Meu primeiro programa em C */</span>
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello, world!\n");
+    return 0;
+}</code></pre>
+      <div class="callout">
+        <p><strong>English tip:</strong> “Hello, world!” significa “Olá, mundo!”. A função <code>printf()</code> exibe texto na saída do programa. A função <code>main()</code> é o ponto de entrada usual do programa em C.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <span class="tag">INTEGER</span>
+        <h3>int age = 20;</h3>
+        <p><strong>int</strong> significa inteiro. A variável <strong>age</strong> armazena um número inteiro.</p>
+      </article>
+      <article class="card">
+        <span class="tag">FLOAT</span>
+        <h3>float price = 9.5;</h3>
+        <p><strong>float</strong> representa um número de ponto flutuante, usado para valores decimais.</p>
+      </article>
+      <article class="card">
+        <span class="tag">CHARACTER</span>
+        <h3>char grade = 'A';</h3>
+        <p><strong>char</strong> armazena um caractere, escrito entre aspas simples.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="estruturas">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">02 · Structures</div>
+      <h2>Estruturas e lógica</h2>
+      <p>Aprenda a controlar o fluxo do programa com condições, laços de repetição e vetores.</p>
+    </div>
+
+    <div class="card lesson">
+      <span class="tag">CONDITIONALS · CONDICIONAIS</span>
+      <h3>if / else — se / senão</h3>
+      <p>Uma estrutura condicional executa diferentes instruções dependendo de uma condição.</p>
+      <pre class="code"><code>int score = 75;
+
+if (score >= 60) {
+    printf("Approved\n");
+} else {
+    printf("Not approved\n");
+}</code></pre>
+      <div class="callout"><p><strong>Vocabulary:</strong> <em>if</em> = se; <em>else</em> = senão; <em>score</em> = pontuação; <em>approved</em> = aprovado.</p></div>
+    </div>
+
+    <div class="card lesson">
+      <span class="tag">LOOPS · REPETIÇÃO</span>
+      <h3>for and while — para e enquanto</h3>
+      <p>Os laços de repetição executam um bloco de código várias vezes.</p>
+      <pre class="code"><code>for (int i = 1; i <= 5; i++) {
+    printf("Number: %d\n", i);
+}</code></pre>
+      <div class="callout"><p><strong>Vocabulary:</strong> <em>loop</em> = laço; <em>number</em> = número; <em>repeat</em> = repetir; <em>condition</em> = condição.</p></div>
+    </div>
+
+    <div class="card lesson">
+      <span class="tag">ARRAYS · VETORES</span>
+      <h3>Storing multiple values — armazenando vários valores</h3>
+      <p>Um vetor armazena vários elementos do mesmo tipo. Em C, os índices começam em zero.</p>
+      <pre class="code"><code>int numbers[3] = {10, 20, 30};
+
+printf("%d\n", numbers[0]); <span class="comment">// Output: 10</span></code></pre>
+      <div class="callout"><p><strong>Vocabulary:</strong> <em>array</em> = vetor/arranjo; <em>index</em> = índice; <em>element</em> = elemento; <em>output</em> = saída.</p></div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Input</h3>
+        <p><strong>Entrada:</strong> dados recebidos pelo programa. Exemplo: <code>scanf()</code> pode ler valores digitados pelo usuário.</p>
+      </article>
+      <article class="card">
+        <h3>Output</h3>
+        <p><strong>Saída:</strong> informações apresentadas pelo programa. Exemplo: <code>printf()</code> exibe dados na tela.</p>
+      </article>
+      <article class="card">
+        <h3>Debugging</h3>
+        <p><strong>Depuração:</strong> processo de encontrar e corrigir erros em um programa.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="glossario">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">03 · Technical vocabulary</div>
+      <h2>Glossário bilíngue</h2>
+      <p>Pesquise uma palavra em inglês ou português para revisar o vocabulário técnico.</p>
+    </div>
+    <input id="glossarySearch" class="search" type="search" placeholder="Pesquisar termo, por exemplo: variable, loop, variável..." aria-label="Pesquisar no glossário">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>English</th><th>Português</th><th>Meaning / Significado</th></tr></thead>
+        <tbody id="glossaryBody"></tbody>
+      </table>
+    </div>
+    <p id="glossaryCount" style="margin-top:12px;font-size:.9rem"></p>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">04 · Knowledge check</div>
+      <h2>English for Programmers Quiz</h2>
+      <p>Responda às perguntas sobre programação em C e inglês instrumental. Cada alternativa apresenta o texto original em inglês e a tradução em português.</p>
+    </div>
+
+    <div class="quiz-card">
+      <div id="quizContent">
+        <div class="quiz-top">
+          <span id="questionCount">Pergunta 1 de 8</span>
+          <span id="scoreLabel">Pontuação: 0</span>
+        </div>
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="topic" id="questionTopic">FOUNDATIONS</div>
+        <h3 class="question" id="questionText"></h3>
+        <p class="translation" id="questionTranslation"></p>
+        <div class="options" id="answers"></div>
+        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+        <div class="quiz-bottom">
+          <span class="hint" id="quizHint">Leia as alternativas em inglês e português.</span>
+          <button class="btn btn-primary" id="nextBtn" disabled>Próxima →</button>
+        </div>
+      </div>
+
+      <div class="result" id="quizResult">
+        <div class="eyebrow">Quiz completed · Quiz concluído</div>
+        <h2 id="resultTitle">Muito bem!</h2>
+        <div class="result-score" id="finalScore">0/8</div>
+        <p id="resultMessage"></p>
+        <p id="resultDetail"></p>
+        <div class="review" id="reviewList"></div>
+        <button class="btn btn-primary" id="restartBtn" style="margin-top:24px">Tentar novamente ↻</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <p><strong>CLAB_</strong> · C Language Lab — English Meets Code</p>
+    <p>Projeto educacional para aprender linguagem C e inglês instrumental.</p>
+  </div>
+</footer>
+
+<script>
+/* ======================================================
+   GLOSSÁRIO BILÍNGUE
+====================================================== */
+const glossary = [
+  ["Algorithm", "Algoritmo", "A sequence of steps to solve a problem. / Sequência de passos para resolver um problema."],
+  ["Array", "Vetor / arranjo", "A collection of elements of the same type. / Coleção de elementos do mesmo tipo."],
+  ["Bug", "Erro", "A problem in a program. / Um problema em um programa."],
+  ["Break", "Interromper", "A statement used to exit a loop or switch. / Instrução usada para sair de um laço ou switch."],
+  ["Code", "Código", "Instructions written in a programming language. / Instruções escritas em uma linguagem de programação."],
+  ["Compiler", "Compilador", "A tool that translates source code. / Ferramenta que traduz o código-fonte."],
+  ["Condition", "Condição", "An expression evaluated as true or false. / Expressão avaliada como verdadeira ou falsa."],
+  ["Data type", "Tipo de dado", "Defines the kind of value a variable can store. / Define o tipo de valor que uma variável pode armazenar."],
+  ["Debugging", "Depuração", "Finding and fixing errors. / Encontrar e corrigir erros."],
+  ["Declare", "Declarar", "To introduce a variable or function. / Introduzir uma variável ou função."],
+  ["Element", "Elemento", "An individual item in a collection. / Um item individual de uma coleção."],
+  ["Else", "Senão", "The alternative branch of a conditional. / O ramo alternativo de uma condicional."],
+  ["Execute", "Executar", "To run a program or instruction. / Rodar um programa ou instrução."],
+  ["Expression", "Expressão", "A combination of values and operators. / Combinação de valores e operadores."],
+  ["Float", "Número decimal", "A floating-point data type in C. / Tipo de dado de ponto flutuante em C."],
+  ["Function", "Função", "A reusable block of code. / Bloco de código reutilizável."],
+  ["Input", "Entrada", "Data received by a program. / Dados recebidos por um programa."],
+  ["Integer", "Inteiro", "A whole number. / Um número inteiro."],
+  ["Keyword", "Palavra reservada", "A word with a special meaning in a language. / Palavra com significado especial na linguagem."],
+  ["Library", "Biblioteca", "Reusable code provided for programs. / Código reutilizável disponível para programas."],
+  ["Loop", "Laço de repetição", "A structure that repeats instructions. / Estrutura que repete instruções."],
+  ["Main", "Principal", "The usual entry-point function in a C program. / Função usual de entrada de um programa em C."],
+  ["Matrix", "Matriz", "A two-dimensional arrangement of values. / Organização bidimensional de valores."],
+  ["Memory", "Memória", "Storage used by a computer program. / Armazenamento utilizado por um programa."],
+  ["Operator", "Operador", "A symbol that performs an operation. / Símbolo que realiza uma operação."],
+  ["Output", "Saída", "Information produced by a program. / Informação produzida por um programa."],
+  ["Parameter", "Parâmetro", "A variable listed in a function definition. / Variável indicada na definição de uma função."],
+  ["Pointer", "Ponteiro", "A variable that stores a memory address. / Variável que armazena um endereço de memória."],
+  ["Print", "Exibir / imprimir", "To display information. / Apresentar informações."],
+  ["Program", "Programa", "A set of instructions executed by a computer. / Conjunto de instruções executadas pelo computador."],
+  ["Return", "Retornar", "To finish a function and optionally return a value. / Finalizar uma função e opcionalmente retornar um valor."],
+  ["String", "Cadeia de caracteres", "A sequence of characters. / Uma sequência de caracteres."],
+  ["Syntax", "Sintaxe", "The rules for writing valid code. / Regras para escrever código válido."],
+  ["Variable", "Variável", "A named storage location for a value. / Local nomeado de armazenamento de um valor."],
+  ["While", "Enquanto", "A loop that continues while a condition is true. / Laço que continua enquanto uma condição é verdadeira."]
+];
+
+const glossaryBody = document.getElementById("glossaryBody");
+const glossarySearch = document.getElementById("glossarySearch");
+const glossaryCount = document.getElementById("glossaryCount");
+
+function renderGlossary(filter = "") {
+  const query = filter.trim().toLowerCase();
+  const filtered = glossary.filter(item =>
+    item.join(" ").toLowerCase().includes(query)
+  );
+
+  glossaryBody.innerHTML = filtered.map(item => `
+    <tr>
+      <td>${escapeHTML(item[0])}</td>
+      <td>${escapeHTML(item[1])}</td>
+      <td>${escapeHTML(item[2])}</td>
+    </tr>
+  `).join("");
+
+  glossaryCount.textContent = `${filtered.length} de ${glossary.length} termos encontrados.`;
+
+  if (!filtered.length) {
+    glossaryBody.innerHTML = '<tr><td colspan="3">Nenhum termo encontrado. Tente outra palavra.</td></tr>';
+  }
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+glossarySearch.addEventListener("input", event => renderGlossary(event.target.value));
+renderGlossary();
+
+/* ======================================================
+   BANCO DE PERGUNTAS
+   Cada alternativa possui inglês e tradução.
+   A resposta correta é identificada pelo índice.
+====================================================== */
+const questions = [
+  {
+    topic: "FOUNDATIONS · FUNDAMENTOS",
+    en: "What is a variable in programming?",
+    pt: "O que é uma variável em programação?",
+    options: [
+      ["A named storage location", "Um local nomeado de armazenamento"],
+      ["A type of keyboard", "Um tipo de teclado"],
+      ["A syntax error", "Um erro de sintaxe"],
+      ["A computer screen", "Uma tela de computador"]
+    ],
+    answer: 0,
+    explanation: "A variable stores a value that a program can use. / Uma variável armazena um valor que o programa pode utilizar."
+  },
+  {
+    topic: "FUNCTIONS · FUNÇÕES",
+    en: "What does main() usually represent in C?",
+    pt: "O que main() normalmente representa em C?",
+    options: [
+      ["A comment", "Um comentário"],
+      ["The program entry point", "O ponto de entrada do programa"],
+      ["A library file", "Um arquivo de biblioteca"],
+      ["A loop", "Um laço de repetição"]
+    ],
+    answer: 1,
+    explanation: "The main() function is the usual entry point of a C program. / A função main() é o ponto de entrada usual de um programa em C."
+  },
+  {
+    topic: "OUTPUT · SAÍDA",
+    en: "What is printf() used for?",
+    pt: "Para que printf() é utilizado?",
+    options: [
+      ["To delete a program", "Excluir um programa"],
+      ["To create a loop", "Criar um laço"],
+      ["To display formatted output", "Exibir uma saída formatada"],
+      ["To declare an array", "Declarar um vetor"]
+    ],
+    answer: 2,
+    explanation: "printf() displays formatted output. / printf() exibe uma saída formatada."
+  },
+  {
+    topic: "INPUT · ENTRADA",
+    en: "What is scanf() commonly used for?",
+    pt: "Para que scanf() é comumente utilizado?",
+    options: [
+      ["To read formatted input", "Ler uma entrada formatada"],
+      ["To repeat a loop", "Repetir um laço"],
+      ["To stop the computer", "Desligar o computador"],
+      ["To create a comment", "Criar um comentário"]
+    ],
+    answer: 0,
+    explanation: "scanf() can read formatted input from standard input. / scanf() pode ler uma entrada formatada da entrada padrão."
+  },
+  {
+    topic: "DATA TYPES · TIPOS DE DADOS",
+    en: "Which C type is commonly used for an integer?",
+    pt: "Qual tipo de C é comumente usado para um número inteiro?",
+    options: [
+      ["char", "Caractere"],
+      ["float", "Número de ponto flutuante"],
+      ["int", "Número inteiro"],
+      ["void", "Sem valor ou tipo de retorno"]
+    ],
+    answer: 2,
+    explanation: "int is used for integer values. / int é utilizado para valores inteiros."
+  },
+  {
+    topic: "CONDITIONALS · CONDICIONAIS",
+    en: "What does the keyword if do?",
+    pt: "O que a palavra reservada if faz?",
+    options: [
+      ["Declares a library", "Declara uma biblioteca"],
+      ["Checks a condition", "Verifica uma condição"],
+      ["Prints a file", "Exibe um arquivo"],
+      ["Ends every function", "Encerra todas as funções"]
+    ],
+    answer: 1,
+    explanation: "if checks a condition and executes code when the condition is true. / if verifica uma condição e executa código quando ela é verdadeira."
+  },
+  {
+    topic: "CONDITIONALS · CONDICIONAIS",
+    en: "What does else mean in a conditional?",
+    pt: "O que else significa em uma estrutura condicional?",
+    options: [
+      ["Repeat", "Repetir"],
+      ["Return", "Retornar"],
+      ["Otherwise / if not", "Caso contrário / se não"],
+      ["Integer", "Número inteiro"]
+    ],
+    answer: 2,
+    explanation: "else defines an alternative branch. / else define um ramo alternativo."
+  },
+  {
+    topic: "LOOPS · REPETIÇÃO",
+    en: "What is a loop used for?",
+    pt: "Para que serve um laço de repetição?",
+    options: [
+      ["To repeat instructions", "Repetir instruções"],
+      ["To rename the computer", "Renomear o computador"],
+      ["To translate a website", "Traduzir um site"],
+      ["To remove all variables", "Remover todas as variáveis"]
+    ],
+    answer: 0,
+    explanation: "A loop repeats a block of instructions. / Um laço repete um bloco de instruções."
+  },
+  {
+    topic: "LOOPS · REPETIÇÃO",
+    en: "What does the keyword break do inside a loop?",
+    pt: "O que a palavra break faz dentro de um laço?",
+    options: [
+      ["Creates a new variable", "Cria uma nova variável"],
+      ["Exits the nearest loop", "Sai do laço mais próximo"],
+      ["Starts the program", "Inicia o programa"],
+      ["Prints a number", "Exibe um número"]
+    ],
+    answer: 1,
+    explanation: "break exits the nearest enclosing loop or switch. / break sai do laço ou switch envolvente mais próximo."
+  },
+  {
+    topic: "ARRAYS · VETORES",
+    en: "What is an array?",
+    pt: "O que é um vetor (array)?",
+    options: [
+      ["A collection of elements", "Uma coleção de elementos"],
+      ["A compiler error", "Um erro de compilação"],
+      ["A single operator", "Um único operador"],
+      ["A type of monitor", "Um tipo de monitor"]
+    ],
+    answer: 0,
+    explanation: "An array stores multiple elements of the same type. / Um vetor armazena vários elementos do mesmo tipo."
+  },
+  {
+    topic: "ARRAYS · VETORES",
+    en: "What is the index of the first element in a C array?",
+    pt: "Qual é o índice do primeiro elemento de um vetor em C?",
+    options: [
+      ["1", "1"],
+      ["-1", "-1"],
+      ["0", "0"],
+      ["10", "10"]
+    ],
+    answer: 2,
+    explanation: "C arrays use zero-based indexing. / Os vetores em C utilizam índices que começam em zero."
+  },
+  {
+    topic: "VOCABULARY · VOCABULÁRIO",
+    en: "What does the word 'debugging' mean?",
+    pt: "O que a palavra debugging significa?",
+    options: [
+      ["Designing a keyboard", "Projetar um teclado"],
+      ["Finding and fixing errors", "Encontrar e corrigir erros"],
+      ["Writing only comments", "Escrever apenas comentários"],
+      ["Installing a printer", "Instalar uma impressora"]
+    ],
+    answer: 1,
+    explanation: "Debugging is the process of finding and fixing errors in code. / Depuração é o processo de encontrar e corrigir erros no código."
+  },
+  {
+    topic: "VOCABULARY · VOCABULÁRIO",
+    en: "What is the Portuguese meaning of 'input'?",
+    pt: "Qual é o significado de input em português?",
+    options: [
+      ["Saída", "Output"],
+      ["Condição", "Condition"],
+      ["Entrada", "Input"],
+      ["Repetição", "Loop"]
+    ],
+    answer: 2,
+    explanation: "Input means data entering a program. / Input significa dados que entram em um programa."
+  },
+  {
+    topic: "VOCABULARY · VOCABULÁRIO",
+    en: "What does 'return' mean in a function?",
+    pt: "O que return significa em uma função?",
+    options: [
+      ["To return a value or finish the function", "Retornar um valor ou finalizar a função"],
+      ["To repeat forever", "Repetir para sempre"],
+      ["To declare a library", "Declarar uma biblioteca"],
+      ["To open a browser", "Abrir um navegador"]
+    ],
+    answer: 0,
+    explanation: "return ends the function and can send a value back to the caller. / return encerra a função e pode devolver um valor a quem a chamou."
+  },
+  {
+    topic: "LIBRARIES · BIBLIOTECAS",
+    en: "Which header provides printf() in C?",
+    pt: "Qual cabeçalho disponibiliza printf() em C?",
+    options: [
+      ["<time.h>", "<time.h> — funções de data e hora"],
+      ["<stdio.h>", "<stdio.h> — entrada e saída padrão"],
+      ["<math.h>", "<math.h> — funções matemáticas"],
+      ["<string.h>", "<string.h> — operações com strings"]
+    ],
+    answer: 1,
+    explanation: "The standard I/O header is stdio.h. / O cabeçalho padrão de entrada e saída é stdio.h."
+  },
+  {
+    topic: "PROGRAMMING · PROGRAMAÇÃO",
+    en: "What is an algorithm?",
+    pt: "O que é um algoritmo?",
+    options: [
+      ["A computer brand", "Uma marca de computador"],
+      ["A sequence of steps to solve a problem", "Uma sequência de passos para resolver um problema"],
+      ["A type of cable", "Um tipo de cabo"],
+      ["A programming error only", "Apenas um erro de programação"]
+    ],
+    answer: 1,
+    explanation: "An algorithm is a sequence of steps designed to solve a problem. / Um algoritmo é uma sequência de passos planejada para resolver um problema."
+  },
+  {
+    topic: "OPERATORS · OPERADORES",
+    en: "What does the operator == test in C?",
+    pt: "O que o operador == verifica em C?",
+    options: [
+      ["Assignment", "Atribuição"],
+      ["Equality", "Igualdade"],
+      ["Multiplication", "Multiplicação"],
+      ["Division", "Divisão"]
+    ],
+    answer: 1,
+    explanation: "== compares two values for equality. / == compara dois valores para verificar se são iguais."
+  },
+  {
+    topic: "FUNCTIONS · FUNÇÕES",
+    en: "What is a function parameter?",
+    pt: "O que é um parâmetro de função?",
+    options: [
+      ["A function's declared input", "Uma entrada declarada de uma função"],
+      ["A computer's power button", "O botão de energia do computador"],
+      ["A type of loop only", "Apenas um tipo de laço"],
+      ["A syntax error", "Um erro de sintaxe"]
+    ],
+    answer: 0,
+    explanation: "A parameter is named in a function definition and receives a value when the function is called. / Um parâmetro é definido na função e recebe um valor quando ela é chamada."
+  },
+  {
+    topic: "RANDOM NUMBERS · NÚMEROS ALEATÓRIOS",
+    en: "Which function generates a pseudo-random number in C?",
+    pt: "Qual função gera um número pseudoaleatório em C?",
+    options: [
+      ["printf()", "Exibir texto"],
+      ["scanf()", "Ler dados formatados"],
+      ["rand()", "Gerar um número pseudoaleatório"],
+      ["strlen()", "Obter o comprimento de uma string"]
+    ],
+    answer: 2,
+    explanation: "rand() generates a pseudo-random integer. / rand() gera um número inteiro pseudoaleatório."
+  },
+  {
+    topic: "STRINGS · CADEIAS DE CARACTERES",
+    en: "What does strlen() return?",
+    pt: "O que strlen() retorna?",
+    options: [
+      ["The length of a string", "O comprimento de uma cadeia de caracteres"],
+      ["The size of the monitor", "O tamanho do monitor"],
+      ["A random number", "Um número aleatório"],
+      ["The name of a function", "O nome de uma função"]
+    ],
+    answer: 0,
+    explanation: "strlen() returns the length of a string, excluding the terminating null character. / strlen() retorna o comprimento da string, sem contar o caractere nulo final."
+  }
+];
+
+/* ======================================================
+   QUIZ INTERATIVO
+====================================================== */
+const QUIZ_SIZE = 8;
+let roundQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let reviewAnswers = [];
+
+const $ = id => document.getElementById(id);
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz() {
+  roundQuestions = shuffle(questions).slice(0, QUIZ_SIZE);
+  currentIndex = 0;
+  score = 0;
+  answered = false;
+  reviewAnswers = [];
+
+  $("quizContent").style.display = "block";
+  $("quizResult").classList.remove("show");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = roundQuestions[currentIndex];
+
+  $("questionCount").textContent = `Pergunta ${currentIndex + 1} de ${roundQuestions.length}`;
+  $("scoreLabel").textContent = `Pontuação: ${score}`;
+  $("progressBar").style.width = `${(currentIndex / roundQuestions.length) * 100}%`;
+  $("questionTopic").textContent = q.topic;
+  $("questionText").textContent = q.en;
+  $("questionTranslation").textContent = `Tradução: ${q.pt}`;
+  $("quizHint").textContent = "Leia as alternativas em inglês e português.";
+  $("nextBtn").disabled = true;
+  $("nextBtn").textContent = currentIndex === roundQuestions.length - 1 ? "Ver resultado →" : "Próxima →";
+
+  const optionsContainer = $("answers");
+  optionsContainer.innerHTML = "";
+
+  const correctOption = q.options[q.answer];
+  const shuffledOptions = shuffle(q.options.map((option, originalIndex) => ({
+    option,
+    originalIndex
+  })));
+
+  // Mantém o índice correto associado à alternativa, mesmo após embaralhar.
+  q.displayOptions = shuffledOptions;
+
+  shuffledOptions.forEach((item, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "option";
+
+    const letter = document.createElement("span");
+    letter.className = "letter";
+    letter.textContent = String.fromCharCode(65 + index);
+
+    const label = document.createElement("span");
+    label.className = "answer-text";
+
+    const english = document.createElement("span");
+    english.className = "answer-english";
+    english.textContent = item.option[0];
+
+    const portuguese = document.createElement("small");
+    portuguese.className = "answer-portuguese";
+    portuguese.textContent = item.option[1];
+
+    label.append(english, portuguese);
+    button.append(letter, label);
+    button.addEventListener("click", () => selectAnswer(index));
+    optionsContainer.appendChild(button);
+  });
+
+  const feedback = $("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+}
+
+function selectAnswer(displayIndex) {
+  if (answered) return;
+  answered = true;
+
+  const q = roundQuestions[currentIndex];
+  const selected = q.displayOptions[displayIndex];
+  const isCorrect = selected.originalIndex === q.answer;
+
+  if (isCorrect) score++;
+
+  reviewAnswers.push({
+    question: q,
+    selected: selected.option,
+    correct: isCorrect
+  });
+
+  document.querySelectorAll(".option").forEach((button, index) => {
+    button.disabled = true;
+
+    if (q.displayOptions[index].originalIndex === q.answer) {
+      button.classList.add("correct");
+    } else if (index === displayIndex && !isCorrect) {
+      button.classList.add("incorrect");
+    }
+  });
+
+  const feedback = $("feedback");
+  feedback.className = `feedback show ${isCorrect ? "good" : "bad"}`;
+
+  const heading = document.createElement("strong");
+  heading.textContent = isCorrect ? "Correct! / Correto!" : "Not quite. / Não foi dessa vez.";
+
+  const explanation = document.createElement("p");
+  explanation.textContent = q.explanation;
+
+  feedback.replaceChildren(heading, explanation);
+  $("scoreLabel").textContent = `Pontuação: ${score}`;
+  $("progressBar").style.width = `${((currentIndex + 1) / roundQuestions.length) * 100}%`;
+  $("quizHint").textContent = isCorrect
+    ? "Muito bem! Continue para a próxima pergunta."
+    : "Observe a alternativa destacada em verde e revise a explicação.";
+
+  $("nextBtn").disabled = false;
+}
+
+function showResult() {
+  $("quizContent").style.display = "none";
+  $("quizResult").classList.add("show");
+
+  $("finalScore").textContent = `${score}/${roundQuestions.length}`;
+  const percentage = Math.round((score / roundQuestions.length) * 100);
+
+  $("resultTitle").textContent =
+    percentage >= 87.5 ? "Excelente trabalho! 🎉" :
+    percentage >= 62.5 ? "Muito bem! Continue praticando!" :
+    "Continue estudando!";
+
+  $("resultMessage").textContent = `Você acertou ${score} de ${roundQuestions.length} perguntas (${percentage}%).`;
+  $("resultDetail").textContent =
+    percentage >= 87.5
+      ? "Excellent! / Excelente! Você demonstra um bom domínio dos conceitos."
+      : "Review the explanations and try again. / Revise as explicações e tente novamente.";
+
+  const reviewList = $("reviewList");
+  reviewList.innerHTML = "<h3>Answer review · Revisão das respostas</h3>";
+
+  reviewAnswers.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "review-item";
+
+    const title = document.createElement("strong");
+    title.textContent = `${index + 1}. ${item.question.en}`;
+
+    const translation = document.createElement("p");
+    translation.textContent = `Tradução: ${item.question.pt}`;
+
+    const chosen = document.createElement("p");
+    chosen.textContent = `Sua resposta: ${item.selected[0]} — ${item.selected[1]}`;
+
+    const correct = document.createElement("p");
+    correct.textContent = `Resposta correta: ${item.question.options[item.question.answer][0]} — ${item.question.options[item.question.answer][1]}`;
+
+    const explanation = document.createElement("p");
+    explanation.textContent = item.question.explanation;
+
+    const status = document.createElement("p");
+    status.style.color = item.correct ? "var(--green)" : "var(--red)";
+    status.style.fontWeight = "800";
+    status.textContent = item.correct ? "CORRETO" : "INCORRETO";
+
+    div.append(title, translation, chosen, correct, explanation, status);
+    reviewList.appendChild(div);
+  });
+}
+
+$("nextBtn").addEventListener("click", () => {
+  if (!answered) return;
+
+  if (currentIndex < roundQuestions.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+});
+
+$("restartBtn").addEventListener("click", startQuiz);
+
+startQuiz();
+</script>
+</body>
+</html>
